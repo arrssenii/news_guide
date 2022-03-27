@@ -1,7 +1,7 @@
 {% extends "base.html" %} {% block content %}
 <div class="ones">
     <form class="forms" method="post">
-        <h1>Авторизация</h1>
+        <h1 class="center">Авторизация</h1>
         {{ form.hidden_tag() }}
         <p>
             {{ form.email.label }}<br> {{ form.email(class="form-control", type="email") }}<br> {% for error in form.email.errors %}
@@ -17,9 +17,10 @@
             </div>
             {% endfor %}
         </p>
-        <p>{{ form.remember_me() }} {{ form.remember_me.label }}</p>
-        <p>{{ form.submit(type="submit", class="btn btn-primary") }}</p>
-        <div>{{ message }}</div>
+        <p class="center">{{ form.remember_me() }} {{ form.remember_me.label }}</p>
+        <p class="center">{{ form.submit(type="submit", class="btn btn-primary") }}</p>
+        <div class="center">{{ message }}</div>
+        <div class="center"><h6>Если у вас нет аккаунта, <a class="btn btn-success" href="/register">зарегистрируйтесь.</a></h6></div>
     </form>
 </div>
 {% endblock %}

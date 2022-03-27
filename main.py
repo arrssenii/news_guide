@@ -6,6 +6,7 @@ import os
 from data.users import User
 from flask_wtf import FlaskForm
 from data import db_session
+from check_pass import password_check
 
 
 # setup the app
@@ -18,19 +19,18 @@ login_manager.init_app(app)
 login_manager.login_view = 'login'
 
 
-
-
 class RegisterForm(FlaskForm):
-    email = EmailField('Почта', validators=[DataRequired()])
-    hashed_password = PasswordField('Пароль', validators=[DataRequired()])
-    password_again = PasswordField('Повторить пароль', validators=[DataRequired()])
-    username = StringField('Имя пользваотеля', validators=[DataRequired()])
+    email = EmailField('Почта:', validators=[DataRequired()])
+    hashed_password = PasswordField('Пароль:', validators=[DataRequired()])
+    password_again = PasswordField(
+        'Повторить пароль:', validators=[DataRequired()])
+    username = StringField('Имя пользваотеля:', validators=[DataRequired()])
     submit = SubmitField('Зарегистрироваться')
 
 
 class LoginForm(FlaskForm):
-    email = EmailField('Почта', validators=[DataRequired()])
-    password = PasswordField('Пароль', validators=[DataRequired()])
+    email = EmailField('Почта:', validators=[DataRequired()])
+    password = PasswordField('Пароль:', validators=[DataRequired()])
     remember_me = BooleanField('Запомнить меня')
     submit = SubmitField('Войти')
 
@@ -40,12 +40,18 @@ class LoginForm(FlaskForm):
 @login_required
 def index():
     return render_template("index.html", title='Home')
- 
+
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     form = RegisterForm()
     if form.validate_on_submit():
+        check_password = password_check(form.hashed_password.data)
+        if True in check_password.values():
+            for k, v in check_password.items():
+                if str(v) is 'True':
+                    return render_template('register.html', title='Регистрация',
+                                           form=form, message=k)
         if form.hashed_password.data != form.password_again.data:
             return render_template('register.html', title='Регистрация',
                                    form=form,
@@ -54,7 +60,7 @@ def register():
         if db_sess.query(User).filter(User.email == form.email.data).first():
             return render_template('register.html', title='Регистрация',
                                    form=form,
-                                   message="Такой пользователь уже есть")
+                                   message="Такой пользователь уже есть!")
         user = User(
             username=form.username.data,
             email=form.email.data,
@@ -95,11 +101,24 @@ def logout():
     return redirect(url_for('index'))
 
 
+@app.route("/")
+@app.route("/test")
+@login_required
+def test():
+    return render_template("test.html", title='Test tongle')
+
+
+@app.errorhandler(404)
+def page_not_found(e):
+    return render_template('404.html'), 404
+
+
 def main():  # main function
     db_session.global_init("db/database.db")
     port = int(os.environ.get("PORT", 5000))
     app.run(host='0.0.0.0', port=port, debug=True)
     app.run(debug=True)
+
 
 # start server
 if __name__ == '__main__':
