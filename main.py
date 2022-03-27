@@ -49,7 +49,7 @@ def register():
         check_password = password_check(form.hashed_password.data)
         if True in check_password.values():
             for k, v in check_password.items():
-                if str(v) is 'True':
+                if str(v) == 'True':
                     return render_template('register.html', title='Регистрация',
                                            form=form, message=k)
         if form.hashed_password.data != form.password_again.data:
