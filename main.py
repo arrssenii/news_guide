@@ -2,7 +2,7 @@ from flask import Flask, request, abort, render_template, redirect, url_for
 from flask_login import LoginManager, login_user, login_required, logout_user, current_user
 import os
 from data.users import User
-from data.users import Posts
+#from data.posts import Posts
 from data import db_session
 from check_pass import password_check
 from forms import RegisterForm, LoginForm
@@ -86,7 +86,7 @@ def logout():
     return redirect(url_for('index'))
 
 
-''' Нужно написать сreate_post.html, форму для создания статьи '''
+''' Нужно написать сreate_post.html, форму для создания статьи 
 @app.route('/create_post', methods=['POST', 'GET'])  # обработчик создания статей
 @login_required
 def create_post():
@@ -106,11 +106,11 @@ def create_post():
         return render_template('сreate_post.html')
 
 
-''' Дописать post_detail.html '''
+Дописать post_detail.html
 @app.route('/posts/<int:id>')  # обработчик просомтра статьи
 def post_detail(id):
     post = Posts.query.get(id)
-    return render_template('post_detail.html', post=post)
+    return render_template('post_detail.html', post=post)'''
 
 
 @app.errorhandler(404)  # обработчик ошибок
