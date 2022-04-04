@@ -10,7 +10,7 @@ ____
 ### ТЗ проекта
 Используемые API:
 - Курсы валют ЦБ РФ в XML (https://www.cbr-xml-daily.ru/)
-- Mews API (https://newsapi.org/)
+- News API (https://newsapi.org/)
 
 Стек проекта:
 - flask (flask_login, wtforms, flask_wtf)
