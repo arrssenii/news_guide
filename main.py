@@ -1,6 +1,5 @@
 from flask import Flask
 from newsapi import NewsApiClient
-import requests
 
 newsapi = NewsApiClient(api_key='5d4e4058e8c84af4badd8f726ac7dc6d')
 
