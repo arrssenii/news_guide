@@ -1,0 +1,45 @@
+{% extends "base.html" %} {% block content %}
+<div class="ones">
+<form class="forms-reg" method="post">
+        <h1 class="center">Регистрация</h1>
+        {{ form.hidden_tag() }}
+        <p>
+            {{ form.username.label }}<br> {{ form.username(class="form-control", type="username") }}<br> {% for error in form.username.errors %}
+            <p class="alert alert-danger" role="alert">
+                {{ error }}
+            </p>
+            {% endfor %}
+        </p>
+        <p>
+            {{ form.email.label }}<br> {{ form.email(class="form-control", type="email") }}<br> {% for error in form.email.errors %}
+            <p class="alert alert-danger" role="alert">
+                {{ error }}
+            </p>
+            {% endfor %}
+        </p>
+        <ul class="pad">
+            <p>Пароль должен содержать:</p>
+            <li>минимум 8 символов</li>
+            <li>латинские буквы верхнего и нижнего регистров</li>
+            <li>цифры</li>
+            <li>специальные символы (!@#$%&'()*+,-./[\\\]^_`{|}~)</li>
+        </ul>
+        <p>
+            {{ form.hashed_password.label }}<br> {{ form.hashed_password(class="form-control", type="password") }}<br> {% for error in form.hashed_password.errors %}
+            <p class="alert alert-danger" role="alert">
+                {{ error }}
+            </p>
+            {% endfor %}
+        </p>
+        <p>
+            {{ form.password_again.label }}<br> {{ form.password_again(class="form-control", type="password") }}<br> {% for error in form.password_again.errors %}
+            <p class="alert alert-danger" role="alert">
+                {{ error }}
+            </p>
+            {% endfor %}
+        </p>
+        <div class="center msg">{{ message }}</div>
+        <p class="center">{{ form.submit(type="submit", class="btn btn-primary") }}</p>
+</form>
+</div>>
+{% endblock %}
