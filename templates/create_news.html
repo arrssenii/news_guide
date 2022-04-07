@@ -1,0 +1,17 @@
+{% extends "base.html" %} 
+{% block content %}
+<div class="container mt-5">
+    <h1>Создание новости</h1>
+    <form method="POST">
+        <h6>Создатель новости: {{ current_user.username }}</h6>
+        <input type="text" name="title" id="title" class="form-control" placeholder="Заголовок"><br>
+        <textarea name="intro" id="intro" class="form-control" placeholder="Интро"></textarea><br>
+        <textarea name="text" id="text" class="form-control" height= 100 placeholder="Текст новости"></textarea><br>
+        <div class="form-group">
+            <label for="photo">Приложите фотографию к новости</label>
+            <input type="file" class="form-control-file" id="photo" name="file">
+        </div>
+        <input type="submit" class="btn btn-success" value="Опубликовать">
+    </form>
+</div>
+{% endblock %}

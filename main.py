@@ -2,7 +2,7 @@ from flask import Flask, request, abort, render_template, redirect, url_for
 from flask_login import LoginManager, login_user, login_required, logout_user, current_user
 import os
 from data.users import User
-#from data.posts import Posts
+from data.news import News
 from data import db_session
 from check_pass import password_check
 from forms import RegisterForm, LoginForm
@@ -21,7 +21,9 @@ login_manager.login_view = 'login'
 @app.route("/home")
 @login_required
 def index():
-    return render_template("index.html", title='Home')
+    db_sess = db_session.create_session()
+    mews = db_sess.query(News)
+    return render_template("index.html", title='Home', news=mews)
 
 
 # обработка регистрации пользователя
@@ -40,8 +42,8 @@ def register():
             return render_template('register.html', title='Регистрация',
                                    form=form,
                                    message="Пароли не совпадают")
-        db_sess = db_session.create_session()  # проверка на существующий акк
-        if db_sess.query(User).filter(User.email == form.email.data).first():
+        db_sess = db_session.create_session()  
+        if db_sess.query(User).filter(User.email == form.email.data).first():  # проверка на существующий акк
             return render_template('register.html', title='Регистрация',
                                    form=form,
                                    message="Такой пользователь уже есть!")
@@ -86,27 +88,28 @@ def logout():
     return redirect(url_for('index'))
 
 
-''' Нужно написать сreate_post.html, форму для создания статьи 
-@app.route('/create_post', methods=['POST', 'GET'])  # обработчик создания статей
+# Нужно написать сreate_post.html, форму для создания статьи 
+@app.route('/create_news', methods=['POST', 'GET'])  # обработчик создания статей
 @login_required
 def create_post():
     if request.method == 'POST':
-        creator = request.form['creator']
+        creator = current_user.username
         title = request.form['title']
         intro = request.form['intro']
         text = request.form['text']
-        post = Posts(creator=creator, title=title, intro=intro, text=text)
+        new = News(creator=creator, title=title, intro=intro, text=text)
         try:
-            db_session.add(post)
-            db_session.commit()
+            db_sess = db_session.create_session()  
+            db_sess.add(new)
+            db_sess.commit()
             return redirect('/home')
         except:
-            return 'Error!'
+            return abort()
     else:
-        return render_template('сreate_post.html')
+        return render_template('create_news.html', title='Создание новости')
 
 
-Дописать post_detail.html
+'''Дописать post_detail.html
 @app.route('/posts/<int:id>')  # обработчик просомтра статьи
 def post_detail(id):
     post = Posts.query.get(id)
@@ -115,7 +118,7 @@ def post_detail(id):
 
 @app.errorhandler(404)  # обработчик ошибок
 def page_not_found(e):
-    return render_template('404.html'), 404
+    return render_template('404.html', title='404'), 404
 
 
 def main():  # главная функция приложния

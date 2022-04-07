@@ -5,8 +5,8 @@ from sqlalchemy import orm
 from sqlalchemy_serializer import SerializerMixin
 
 
-class Posts(SqlAlchemyBase, SerializerMixin):
-    __tablename__ = 'posts'
+class News(SqlAlchemyBase, SerializerMixin):
+    __tablename__ = 'news'
 
     id = sqlalchemy.Column(sqlalchemy.Integer,
                            primary_key=True, autoincrement=True)
