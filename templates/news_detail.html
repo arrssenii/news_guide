@@ -14,18 +14,28 @@
 </li>
 {% endblock %}
 {% block content %}
+{% for item in news %}
 <div class="col-md-9 ms-sm-auto col-lg-10 px-md-4 flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-    <form method="POST" enctype="multipart/form-data">
-        <h6>Создатель новости: {{ current_user.username }}</h6>
-            {{ message }}
-        <input type="text" name="title" id="title" class="form-control" placeholder="Заголовок"><br>
-        <textarea name="intro" id="intro" class="form-control" placeholder="Интро"></textarea><br>
-        <textarea name="text" id="text" class="form-control" height= 100 placeholder="Текст новости"></textarea><br>
-        <div class="mb-3">
-            <label for="formFile" class="form-label">Приложите фотографию к новости</label>
-            <input class="form-control" type="file" name="file" id="file">
-        </div>
-        <input type="submit" class="btn btn-success" value="Опубликовать">
-    </form>
+    <div class="text-box">
+		<h3>
+			{{ item.title }}
+        </h3>						
+		<div class="blog-detail">
+		     Опубликовано <span>{{item.create_date.strftime("%Y-%m-%d | %H:%M") }}</span>
+		</div>
+		<div class="blog-image">
+            <img src="data:image/png;base64,{{item.image}}" width="280", height="200">
+
+		</div>
+		<div class="blog-content">
+			<blockquote>
+                {{ item.intro }}
+			</blockquote>
+			<p>
+			    {{ item.text }}
+            </p>
+		</div>
+	</div>
 </div>
+{% endfor %}
 {% endblock %}

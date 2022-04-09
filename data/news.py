@@ -14,8 +14,9 @@ class News(SqlAlchemyBase, SerializerMixin):
         sqlalchemy.String, sqlalchemy.ForeignKey("users.username"))
     title = sqlalchemy.Column(sqlalchemy.String(100),
                               nullable=True, unique=True)
-    intro = sqlalchemy.Column(sqlalchemy.String(140), nullable=True)
-    text = sqlalchemy.Column(sqlalchemy.Text(800), nullable=True)
-    start_date = sqlalchemy.Column(sqlalchemy.DateTime,
+    intro = sqlalchemy.Column(sqlalchemy.String(140), nullable=False)
+    text = sqlalchemy.Column(sqlalchemy.Text(800), nullable=False)
+    create_date = sqlalchemy.Column(sqlalchemy.DateTime,
                                    default=datetime.datetime.now)
+    image = sqlalchemy.Column(sqlalchemy.Text, nullable=False)
     user = orm.relation('User')

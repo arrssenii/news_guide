@@ -1,12 +1,14 @@
 from flask import Flask, request, abort, render_template, redirect, url_for
 from flask_login import LoginManager, login_user, login_required, logout_user, current_user
 import os
+import base64
 from data.users import User
 from data.news import News
 from data import db_session
 from check_pass import password_check
 from forms import RegisterForm, LoginForm
-# from api import
+from api import news_api
+from currencies_api import currencies
 # настройки приложения
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'o_my_god__secret_key'
@@ -16,15 +18,21 @@ login_manager.init_app(app)
 login_manager.login_view = 'login'
 
 
-''' Нужно добваить вывод рвботы с API + подумать над заполнением главной страницы '''
 @app.route("/")  # главная (домашняя) страница
 @app.route("/home")
 @login_required
 def index():
     db_sess = db_session.create_session()
-    mews = db_sess.query(News)
-    return render_template("index.html", title='Home', news=mews)
+    news = db_sess.query(News)
+    return render_template("index.html", title='Home', news=news[::-1], news_api=news_api[:6], currencies=currencies)
 
+
+@app.route("/news_to_me")
+@login_required
+def news_to_me():
+    db_sess = db_session.create_session()
+    news = db_sess.query(News)
+    return render_template("news_to_me.html", title='Home', news=news[::-1])
 
 # обработка регистрации пользователя
 @app.route('/register', methods=['GET', 'POST'])
@@ -42,8 +50,9 @@ def register():
             return render_template('register.html', title='Регистрация',
                                    form=form,
                                    message="Пароли не совпадают")
-        db_sess = db_session.create_session()  
-        if db_sess.query(User).filter(User.email == form.email.data).first():  # проверка на существующий акк
+        db_sess = db_session.create_session()
+        # проверка на существующий акк
+        if db_sess.query(User).filter(User.email == form.email.data).first():
             return render_template('register.html', title='Регистрация',
                                    form=form,
                                    message="Такой пользователь уже есть!")
@@ -88,32 +97,42 @@ def logout():
     return redirect(url_for('index'))
 
 
-# Нужно написать сreate_post.html, форму для создания статьи 
-@app.route('/create_news', methods=['POST', 'GET'])  # обработчик создания статей
+@app.route('/create_news', methods=['POST', 'GET'])
 @login_required
-def create_post():
+def create_news():
     if request.method == 'POST':
         creator = current_user.username
         title = request.form['title']
         intro = request.form['intro']
         text = request.form['text']
-        new = News(creator=creator, title=title, intro=intro, text=text)
-        try:
-            db_sess = db_session.create_session()  
-            db_sess.add(new)
-            db_sess.commit()
-            return redirect('/home')
-        except:
-            return abort()
+        image = request.files['file']
+        bytes = image.read()
+
+        newimage = base64.b64encode(bytes).decode('utf-8')
+        db_sess = db_session.create_session()
+        if db_sess.query(News).filter(News.title == title).first():
+            return render_template('create_news.html', title='Создание новости',
+                                   message="Такая новость уже есть!")
+        else:
+            new = News(creator=creator, title=title,
+                       intro=intro, text=text, image=newimage)
+            try:
+                db_sess = db_session.create_session()
+                db_sess.add(new)
+                db_sess.commit()
+                return redirect('/news_to_me')
+            except Exception as e:
+                print(str(e))
+                return abort(404)
     else:
         return render_template('create_news.html', title='Создание новости')
 
 
-'''Дописать post_detail.html
-@app.route('/posts/<int:id>')  # обработчик просомтра статьи
-def post_detail(id):
-    post = Posts.query.get(id)
-    return render_template('post_detail.html', post=post)'''
+@app.route('/news/<int:id>')  # обработчик просомтра новости
+def news_detail(id):
+    db_sess = db_session.create_session()
+    news = db_sess.query(News).filter(News.id == id)
+    return render_template('news_detail.html', news=news)
 
 
 @app.errorhandler(404)  # обработчик ошибок
