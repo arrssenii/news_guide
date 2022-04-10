@@ -1,6 +1,6 @@
 ## News Guide
 
-Будущее раcположение сайта: https://news_guide.herokuapp.com
+Будущее раcположение сайта: https://news_guide-herokuapp.com
 
 ____ 
 ### Описание проекта
