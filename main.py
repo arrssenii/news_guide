@@ -25,7 +25,7 @@ login_manager.login_view = 'login'
 def index():
     db_sess = db_session.create_session()
     news = db_sess.query(News)
-    return render_template("index.html", title='Главная', news=news[::-1], news_api=news_api[:6], currencies=currencies)
+    return render_template("index.html", title='Главная', news=news[::-1], news_api=news_api, currencies=currencies)
 
 
 @app.route("/news_to_me")

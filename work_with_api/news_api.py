@@ -1,6 +1,6 @@
 import requests
 
-request = "https://newsapi.org/v2/top-headlines?country=ru&apiKey=5d4e4058e8c84af4badd8f726ac7dc6d"
+request = "https://newsapi.org/v2/top-headlines?country=ru&apiKey=499c7a59bd714f83abbee6644022628e"
 
 # Выполняем запрос.
 response = requests.get(request)
@@ -20,7 +20,6 @@ if response:
                 news_api.append({'source': source, 'title': title, 'url': url, 'publishedAt': publishedAt, 'urlToImage': urlToImage})
         except Exception:
             pass
-        
 else:
     print("Ошибка выполнения запроса:")
     print(request)
