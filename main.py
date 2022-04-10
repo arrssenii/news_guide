@@ -1,3 +1,4 @@
+from turtle import title
 from flask import Flask, request, abort, render_template, redirect, url_for
 from flask_login import LoginManager, login_user, login_required, logout_user, current_user
 import os
@@ -7,8 +8,8 @@ from data.news import News
 from data import db_session
 from check_pass import password_check
 from forms import RegisterForm, LoginForm
-from api import news_api
-from currencies_api import currencies
+from work_with_api.news_api import news_api
+from work_with_api.currencies_api import currencies
 # настройки приложения
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'o_my_god__secret_key'
@@ -24,7 +25,7 @@ login_manager.login_view = 'login'
 def index():
     db_sess = db_session.create_session()
     news = db_sess.query(News)
-    return render_template("index.html", title='Home', news=news[::-1], news_api=news_api[:6], currencies=currencies)
+    return render_template("index.html", title='Главная', news=news[::-1], news_api=news_api[:6], currencies=currencies)
 
 
 @app.route("/news_to_me")
@@ -32,9 +33,11 @@ def index():
 def news_to_me():
     db_sess = db_session.create_session()
     news = db_sess.query(News)
-    return render_template("news_to_me.html", title='Home', news=news[::-1])
+    return render_template("news_to_me.html", title='Ваши новости', news=news[::-1])
 
 # обработка регистрации пользователя
+
+
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     form = RegisterForm()
@@ -132,7 +135,7 @@ def create_news():
 def news_detail(id):
     db_sess = db_session.create_session()
     news = db_sess.query(News).filter(News.id == id)
-    return render_template('news_detail.html', news=news)
+    return render_template('news_detail.html', title=id, news=news)
 
 
 @app.errorhandler(404)  # обработчик ошибок
