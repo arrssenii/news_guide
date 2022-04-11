@@ -1,4 +1,3 @@
-from turtle import title
 from flask import Flask, request, abort, render_template, redirect, url_for
 from flask_login import LoginManager, login_user, login_required, logout_user, current_user
 import os
@@ -25,6 +24,7 @@ login_manager.login_view = 'login'
 def index():
     db_sess = db_session.create_session()
     news = db_sess.query(News)
+    news = db_sess.query(News).filter(News.creator == current_user.username)
     return render_template("index.html", title='Главная', news=news[::-1], news_api=news_api, currencies=currencies)
 
 
@@ -32,13 +32,19 @@ def index():
 @login_required
 def news_to_me():
     db_sess = db_session.create_session()
-    news = db_sess.query(News)
+    news = db_sess.query(News).filter(News.creator == current_user.username)
     return render_template("news_to_me.html", title='Ваши новости', news=news[::-1])
 
-# обработка регистрации пользователя
+
+@app.route("/news_of_all")
+@login_required
+def news_of_all():
+    db_sess = db_session.create_session()
+    news = db_sess.query(News)
+    return render_template("news_of_all.html", title='Другие новости', news=news[::-1])
 
 
-@app.route('/register', methods=['GET', 'POST'])
+@app.route('/register', methods=['GET', 'POST'])  # обработка регистрации пользователя
 def register():
     form = RegisterForm()
     if form.validate_on_submit():
