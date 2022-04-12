@@ -140,8 +140,9 @@ def create_news():
 @app.route('/news/<int:id>')  # обработчик просомтра новости
 def news_detail(id):
     db_sess = db_session.create_session()
-    news = db_sess.query(News).filter(News.id == id)
-    return render_template('news_detail.html', title=id, news=news)
+    news = db_sess.query(News)
+    news_title = db_sess.query(News).filter(News.id == id).first()
+    return render_template('news_detail.html', title=news_title.title, news=news[::-1], id=id)
 
 
 @app.errorhandler(404)  # обработчик ошибок
