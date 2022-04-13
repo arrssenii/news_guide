@@ -1,0 +1,72 @@
+{% extends "base_2.html" %} 
+{% block menu %}
+<li class="nav-item">
+  <a class="nav-link active" aria-current="page" href="/home">
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-home" aria-hidden="true"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+    Главная
+  </a>
+</li>
+<li class="nav-item">
+  <a class="nav-link" href="/news_of_all">
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+    Другие новоти
+  </a>
+</li>
+<li class="nav-item">
+  <a class="nav-link" href="/news_to_me">
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file" aria-hidden="true"><path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"></path><polyline points="13 2 13 9 20 9"></polyline></svg>
+    Ваши новости
+  </a>
+</li>
+{% endblock %}
+{% block content %}
+<main class="col-md-9 ms-sm-auto col-lg-10 px-md-4"><div class="chartjs-size-monitor"><div class="chartjs-size-monitor-expand">
+  <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+    <h1 class="h2">Главное</h1>
+  </div>
+  <h4 class="my-4 w-100 chartjs-render-monitor" id="myChart" width="1012" height="427" style="display: block; width: 810px;">Популярные новости прямо сейчас</h4>
+  <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+    {% for new in news_api %}
+    <div class="col">
+      <div class="card shadow-sm">
+        <img class="bd-placeholder-img card-img-top" width="100%" src="{{ new['urlToImage'] }}">
+        <div class="card-body">
+          <p class="card-text">{{ new['title'] }}</p>
+          <div class="d-flex justify-content-between align-items-center">
+            <div class="btn-group">
+              <a class="btn btn-secondary" target="_blank" href="{{ new['url'] }}" style="padding: 8px 30px; margin-top: 10px;">Читать</a>
+            </div>
+            <small class="text-muted"></small>Опубликовано в {{ new['publishedAt'][11:16] }}</small>
+          </div>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  
+  <h2 style="margin-top: 50px;">Курсы валют</h2>
+  <div class="table-responsive">
+    <table class="table table-striped table-sm">
+      <thead>
+        <tr>
+          <th scope="col">Код валюты</th>
+          <th scope="col">Названия валюты</th>
+          <th scope="col">Стоимость раньше</th>
+          <th scope="col">Стоимсть сейчас</th>
+        </tr>
+      </thead>
+      {% for currency in currencies %}
+      <tbody>
+        <tr> 
+          <td>{{currency['CharCode']}}</td>
+          <td>{{currency['Name']}}</td>
+          <td>{{currency['Previous']}}</td>
+          <td>{{currency['Value']}}</td>
+        </tr>
+      </tbody>
+      {% endfor %}
+    </table>
+  </div>
+</main>
+
+{% endblock %} 

@@ -1,0 +1,138 @@
+.ones {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    padding-top: 30px;
+    padding-bottom: 0;
+}
+
+.forms-reg {
+    width: 100%;
+    max-width: 500px;
+    padding: 15px;
+    margin: auto;
+}
+
+.forms {
+    width: 100%;
+    max-width: 330px;
+    padding: 15px;
+    margin: auto;
+}
+
+.center {
+    text-align: center;
+}
+
+
+::-webkit-scrollbar {
+    width: 12px;
+}
+
+::-webkit-scrollbar-track {
+    box-shadow: inset 0 0 5px rgb(7, 7, 7); 
+}
+ 
+::-webkit-scrollbar-thumb {
+    background: #212529; 
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #525252; 
+}
+
+.px-3 {
+    text-decoration: none;
+    color: #eee;
+
+}
+
+a:hover {
+  color: #414141;
+}
+
+
+.navbar-brand{
+    width: 50px;
+    margin-left: 50px
+}
+
+.nav-link {
+    text-decoration: none;
+    color: rgb(0, 0, 0);
+}
+
+.active {
+    color: rgb(17, 0, 168) !important;
+  }
+
+.pad {
+    margin-top: 0;
+}
+
+.msg {
+    margin-bottom: 10px;
+}
+
+.error_1 {
+    padding: 40px;
+    font-size: 40px;
+    text-align: center;
+    text-shadow: 0 0 80px red,0 0 30px FireBrick,0 0 6px DarkRed;
+    color: red;
+  }
+  
+  div p { margin:0; }
+  #error:hover { text-shadow: 0 0 200px #ffffff,0 0 80px #008000,0 0 6px #0000ff; }
+  #code:hover { text-shadow: 0 0 100px red,0 0 40px FireBrick,0 0 8px DarkRed; }
+
+  #error {
+    color: rgba(23, 4, 120, 0.587);
+    text-shadow: 0 0 80px #0d0599,0 0 30px #008000,0 0 6px #0000ff;
+  }
+  
+  #error span {
+    animation: upper 11s linear infinite;
+  }
+
+  #code span:nth-of-type(2) {
+    animation: lower 10s linear infinite;
+  }
+
+  #code span:nth-of-type(1) {
+    text-shadow: none;
+    opacity:.4;
+  }
+
+  @keyframes upper {
+    0%,19.999%,22%,62.999%,64%, 64.999%,70%,100% {
+      opacity:.99; text-shadow: 0 0 80px #ffffff,0 0 30px #008000,0 0 6px #0000ff;
+    }
+    20%,21.999%,63%,63.999%,65%,69.999% {
+      opacity:0.4; text-shadow: none; 
+    }
+  }
+
+  @keyframes lower {
+    0%,12%,18.999%,23%,31.999%,37%,44.999%,46%,49.999%,51%,58.999%,61%,68.999%,71%,85.999%,96%,100% {
+      opacity:0.99; text-shadow: 0 0 80px red,0 0 30px FireBrick,0 0 6px DarkRed;
+    }
+    19%,22.99%,32%,36.999%,45%,45.999%,50%,50.99%,59%,60.999%,69%,70.999%,86%,95.999% { 
+      opacity:0.4; text-shadow: none; 
+    }
+  }
+  
+
+blockquote {
+    margin: 20px 0;
+    padding-left: 20px;
+    border-left: 5px solid #ee6e73;
+    font-style: italic;
+    line-height: 26px;
+    font-weight: 400;
+    font-size: 18px;
+}
+
+.blog-content {
+  font-size: 20px;
+}
