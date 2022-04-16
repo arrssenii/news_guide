@@ -16,3 +16,10 @@ class LoginForm(FlaskForm):  # форма входа в профиль
     password = PasswordField('Пароль:', validators=[DataRequired()])
     remember_me = BooleanField('Запомнить меня')
     submit = SubmitField('Войти')
+
+
+class CreateForm(FlaskForm):  # форма создания новости
+    title = StringField('Заголовок новсти:', validators=[DataRequired()])
+    intro = StringField('Интро:', validators=[DataRequired()])
+    text = StringField('Текст новости:', validators=[DataRequired()])
+    submit = SubmitField('Опубликовать')

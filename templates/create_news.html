@@ -24,14 +24,35 @@
     <form method="POST" enctype="multipart/form-data">
         <h6>Создатель новости: {{ current_user.username }}</h6>
             {{ message }}
-        <input type="text" name="title" id="title" class="form-control" placeholder="Заголовок"><br>
-        <textarea name="intro" id="intro" class="form-control" placeholder="Интро"></textarea><br>
-        <textarea name="text" id="text" class="form-control" height= 100 placeholder="Текст новости"></textarea><br>
-        <div class="mb-3">
-            <label for="formFile" class="form-label">Приложите фотографию к новости</label>
-            <input class="form-control" type="file" name="file" id="file">
-        </div>
-        <input type="submit" class="btn btn-success" value="Опубликовать">
+            {{ form.hidden_tag() }}
+            <p>
+                {{ form.title.label }}<br> {{ form.title(class="form-control") }}<br> 
+                {% for error in form.title.errors %}
+                <p class="alert alert-danger" role="alert">
+                    {{ error }}
+                </p>
+                {% endfor %}
+            </p>
+            <p>
+                {{ form.intro.label }}<br> {{ form.intro(class="form-control") }}<br> {% for error in form.intro.errors %}
+                <p class="alert alert-danger" role="alert">
+                    {{ error }}
+                </p>
+                {% endfor %}
+            </p>
+            <p>
+                {{ form.text.label }}<br> {{ form.text(class="form-control") }}<br> {% for error in form.text.errors %}
+                <p class="alert alert-danger" role="alert">
+                    {{ error }}
+                </p>
+                {% endfor %}
+            </p>
+            <div class="mb-3">
+              <label for="formFile" class="form-label">Приложите фотографию к новости</label>
+              <input class="form-control" type="file" name="file" id="file">
+            </div>
+            <p>{{ message }}</p>
+            <p>{{ form.submit(type="submit", class="btn btn-primary") }}</p>
     </form>
 </div>
 {% endblock %}

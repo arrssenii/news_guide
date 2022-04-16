@@ -29,9 +29,8 @@
     {% for new in news_api %}
     <div class="col">
       <div class="card shadow-sm">
-        <img class="bd-placeholder-img card-img-top" width="100%" src="{{ new['urlToImage'] }}">
         <div class="card-body">
-          <p class="card-text">{{ new['title'] }}</p>
+          <h6 class="card-text">{{ new['title'] }}</h6>
           <div class="d-flex justify-content-between align-items-center">
             <div class="btn-group">
               <a class="btn btn-secondary" target="_blank" href="{{ new['url'] }}" style="padding: 8px 30px; margin-top: 10px;">Читать</a>

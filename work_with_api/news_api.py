@@ -14,12 +14,8 @@ try:
             title = (article['title'])
             url = article['url']
             publishedAt = article['publishedAt']
-            urlToImage = article['urlToImage']
-
-            if requests.get(urlToImage).status_code == 200:
-                news_api.append({'source': source, 'title': title, 'url': url,
-                                'publishedAt': publishedAt, 'urlToImage': urlToImage})
-
+            news_api.append({'source': source, 'title': title, 'url': url,
+                            'publishedAt': publishedAt})
     else:
         print("Ошибка выполнения запроса:")
         print(request)

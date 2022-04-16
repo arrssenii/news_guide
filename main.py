@@ -6,7 +6,7 @@ from data.users import User
 from data.news import News
 from data import db_session
 from check_pass import password_check
-from forms import RegisterForm, LoginForm
+from forms import RegisterForm, LoginForm, CreateForm
 from work_with_api.news_api import news_api
 from work_with_api.currencies_api import currencies
 # настройки приложения
@@ -109,32 +109,30 @@ def logout():
 @app.route('/create_news', methods=['POST', 'GET'])
 @login_required
 def create_news():
-    if request.method == 'POST':
-        creator = current_user.username
-        title = request.form['title']
-        intro = request.form['intro']
-        text = request.form['text']
+    db_sess = db_session.create_session()
+    news = db_sess.query(News)
+    form = CreateForm()
+    if form.validate_on_submit():
         image = request.files['file']
-        bytes = image.read()
-
-        newimage = base64.b64encode(bytes).decode('utf-8')
-        db_sess = db_session.create_session()
-        if db_sess.query(News).filter(News.title == title).first():
-            return render_template('create_news.html', title='Создание новости',
-                                   message="Такая новость уже есть!")
+        bytestring = image.read()
+        if bytestring:
+            image = base64.b64encode(bytestring).decode('utf-8')
         else:
-            new = News(creator=creator, title=title,
-                       intro=intro, text=text, image=newimage)
-            try:
-                db_sess = db_session.create_session()
-                db_sess.add(new)
-                db_sess.commit()
-                return redirect('/news_to_me')
-            except Exception as e:
-                print(str(e))
-                return abort(404)
-    else:
-        return render_template('create_news.html', title='Создание новости')
+            with open('static\img\emptiness.jpg','rb') as file:
+                bytestring = file.read()
+                image = base64.b64encode(bytestring).decode('utf-8')
+        news = News(
+            creator = current_user.username,
+            title=form.title.data,
+            intro=form.intro.data,
+            text=form.text.data,
+            image=image,
+        )  # добавление пользователя в базу
+        db_sess.add(news)
+        db_sess.commit()
+        # переброс пользователя на страницу входа в профиль
+        return redirect('/news_to_me')
+    return render_template('create_news.html', title='Создание новости', form=form, news=news[::-1])
 
 
 @app.route('/news/<int:id>')  # обработчик просомтра новости
@@ -150,7 +148,21 @@ def page_not_found(e):
     return render_template('404.html', title='404'), 404
 
 
+@app.route('/news_delete/<int:id>', methods=['GET', 'POST'])
+@login_required
+def news_delete(id):
+    db_sess = db_session.create_session()
+    news = db_sess.query(News).filter(News.id == id,
+                                          News.creator == current_user.username
+                                          ).first()
+    print(news.title)
+    if news:
+        db_sess.delete(news)
+        db_sess.commit()
+    else:
+        abort(404)
+    return redirect('/news_to_me')
+
 if __name__ == '__main__':  # запуск приложения
     db_session.global_init("db/database.db")
-    port = int(os.environ.get("PORT", 5000))
-    app.run(host='0.0.0.0', port=port, debug=True)
+    app.run(debug=True)
