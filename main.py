@@ -155,13 +155,58 @@ def news_delete(id):
     news = db_sess.query(News).filter(News.id == id,
                                           News.creator == current_user.username
                                           ).first()
-    print(news.title)
     if news:
         db_sess.delete(news)
         db_sess.commit()
     else:
         abort(404)
     return redirect('/news_to_me')
+
+
+@app.route('/news_edit/<int:id>', methods=['GET', 'POST'])
+@login_required
+def edit_news(id):
+    form = CreateForm()
+    if request.method == "GET":
+        db_sess = db_session.create_session()
+        news = db_sess.query(News).filter(News.id == id,
+                                          News.creator == current_user.username
+                                          ).first()
+        if news:
+            news.creator = current_user.username
+            news.title = form.title.data
+            news.intro = form.intro.data
+            news.image = news.image
+        else:
+            abort(404)
+    if form.validate_on_submit():
+        db_sess = db_session.create_session()
+        news = db_sess.query(News).filter(News.id == id,
+                                          News.creator == current_user.username
+                                          ).first()
+        if news:
+            image = request.files['file']
+            bytestring = image.read()
+            if bytestring:
+                image = base64.b64encode(bytestring).decode('utf-8')
+            else:
+                with open('static\img\emptiness.jpg','rb') as file:
+                    bytestring = file.read()
+                    image = base64.b64encode(bytestring).decode('utf-8')
+            news.creator = current_user.username
+            news.title = form.title.data
+            news.intro = form.intro.data
+            news.image = image
+            db_sess.commit()
+            return redirect('/')
+        else:
+            abort(404)
+    db_sess = db_session.create_session()
+    news = db_sess.query(News)
+    return render_template('create_news.html',
+                           title='Редактирование Новости',
+                           form=form, news=news[::-1])
+
 
 if __name__ == '__main__':  # запуск приложения
     db_session.global_init("db/database.db")

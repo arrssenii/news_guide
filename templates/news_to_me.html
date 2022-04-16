@@ -26,12 +26,13 @@
             {% for item in news %} 
             <div class="card shadow-sm"" style="width: 18rem;">
                 <img class="bd-placeholder-img card-img-top" width="100%" height="225" src="data:image/png;base64,{{item.image}}" width="280", height="200">
-                <div class="card-body">
+                <div class="card-body row">
                     <h5 class="card-title">{{ item.title }}</h5>
                     <p class="card-text">{{ item.intro }}</p>
                     <small class="text-muted">{{item.create_date.strftime("%Y-%m-%d | %H:%M")}}</small>
-                    <a class="btn o btn-outline-dark" type="button" href="/news/{{ item.id }}">Читать новость</a>
-                    <a class="btn o btn-outline-danger" type="button" href="/news_delete/{{ item.id }}">Удалить новость</a>
+                    <a class="btn o btn-outline-dark" type="button" href="/news/{{ item.id }}">Читать</a>
+                    <a class="btn o btn-outline-danger" type="button" href="/news_delete/{{ item.id }}">Удалить</a>
+                    <a class="btn o btn-outline-info" type="button" href="/news_edit/{{ item.id }}">Редактировать</a>
                 </div>
             </div>
             {% endfor %}
