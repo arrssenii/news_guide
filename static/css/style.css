@@ -51,6 +51,17 @@ a:hover {
   color: #414141;
 }
 
+@media (max-width: 480px) {
+
+.navbar-nav {
+    margin: auto;
+}
+
+.navbar-brand {
+  margin-left: 32%;
+}
+}
+
 
 
 
@@ -119,7 +130,6 @@ a:hover {
     }
   }
   
-
 blockquote {
     margin: 20px 0;
     padding-left: 20px;
@@ -134,4 +144,6 @@ blockquote {
   font-size: 20px;
 }
 
-.o { margin: 5px 5px 5px 5px }
+.o {
+  margin: 5px 5px 5px 5px;
+} 

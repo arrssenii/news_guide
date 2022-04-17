@@ -1,4 +1,4 @@
-from wtforms import StringField, PasswordField, BooleanField, SubmitField, EmailField
+from wtforms import StringField, PasswordField, BooleanField, SubmitField, EmailField, TextAreaField
 from wtforms.validators import DataRequired
 from flask_wtf import FlaskForm
 
@@ -20,6 +20,6 @@ class LoginForm(FlaskForm):  # форма входа в профиль
 
 class CreateForm(FlaskForm):  # форма создания новости
     title = StringField('Заголовок новсти:', validators=[DataRequired()])
-    intro = StringField('Интро:', validators=[DataRequired()])
-    text = StringField('Текст новости:', validators=[DataRequired()])
+    intro = TextAreaField('Интро:', validators=[DataRequired()])
+    text = TextAreaField('Текст новости:', validators=[DataRequired()])
     submit = SubmitField('Опубликовать')

@@ -1,38 +1,41 @@
-{% extends "base_2.html" %} 
-{% block menu %}
+{% extends "base_2.html" %} {% block menu %}
 <li class="nav-item">
     <a class="nav-link" aria-current="page" href="/home">
-      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-home" aria-hidden="true"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
-      Главная
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-home" aria-hidden="true"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>        Главная
     </a>
 </li>
 <li class="nav-item">
     <a class="nav-link" href="/news_of_all">
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
-      Другие новости
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>        Другие новости
     </a>
 </li>
 <li class="nav-item">
     <a class="nav-link active" href="/news_to_me">
-      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file" aria-hidden="true"><path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"></path><polyline points="13 2 13 9 20 9"></polyline></svg>
-      Ваши новости
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file" aria-hidden="true"><path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"></path><polyline points="13 2 13 9 20 9"></polyline></svg>        Ваши новости
     </a>
 </li>
-{% endblock %}
-{% block content %}
-<main class="col-md-9 ms-sm-auto col-lg-10 px-md-4"><div class="chartjs-size-monitor"><div class="chartjs-size-monitor-expand">
-    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3">
-        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
-            {% for item in news %} 
-            <div class="card shadow-sm"" style="width: 18rem;">
-                <img class="bd-placeholder-img card-img-top" width="100%" height="225" src="data:image/png;base64,{{item.image}}" width="280", height="200">
-                <div class="card-body row">
-                    <h5 class="card-title">{{ item.title }}</h5>
-                    <p class="card-text">{{ item.intro }}</p>
-                    <small class="text-muted">{{item.create_date.strftime("%Y-%m-%d | %H:%M")}}</small>
-                    <a class="btn o btn-outline-dark" type="button" href="/news/{{ item.id }}">Читать</a>
-                    <a class="btn o btn-outline-danger" type="button" href="/news_delete/{{ item.id }}">Удалить</a>
-                    <a class="btn o btn-outline-info" type="button" href="/news_edit/{{ item.id }}">Редактировать</a>
+{% endblock %} {% block content %}
+<main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+    <div class="chartjs-size-monitor">
+        <div class="chartjs-size-monitor-expand">
+            <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3">
+                <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+                    {% for item in news %}
+                    <div class="card shadow-sm" " style="width: 18rem; ">
+                <img class="bd-placeholder-img card-img-top " width="100% " height="225 " src="data:image/png;base64,{{item.image}} " width="280 ", height="200 ">
+                <div class="card-body row ">
+                    <h5 class="card-title ">{{ item.title }}</h5>
+                    <p class="card-text ">{{ item.intro }}</p>
+                    <small class="text-muted ">{{item.create_date.strftime("%Y-%m-%d | %H:%M ")}}</small>
+                    <a class="btn o btn-outline-dark " type="button " href="/news/{{ item.id }} "><svg xmlns="http://www.w3.org/2000/svg " width="24 " height="24 " viewBox="0 0 24 24 " fill="none " stroke="#000000 " stroke-width="2
+                        " stroke-linecap="round " stroke-linejoin="round "><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z "></path><circle cx="12 " cy="12 " r="3 "></circle></svg> Читать</a>
+                    <a class="btn o btn-outline-danger " type="button " href="/news_delete/{{ item.id }} "><svg xmlns="http://www.w3.org/2000/svg " width="24 " height="24 " viewBox="0 0 24 24 " fill="none " stroke="#000000 " stroke-width="2
+                        " stroke-linecap="round " stroke-linejoin="round "><polyline points="3 6 5 6 21 6 "></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2 "></path><line x1="10 " y1="11 " x2="10 " y2="17
+                        "></line><line x1="14 " y1="11 " x2="14 " y2="17 "></line></svg> Удаить</a>
+                    <a class="btn o btn-outline-info " type="button " href="/news_edit/{{ item.id }} ">
+                        <svg xmlns="http://www.w3.org/2000/svg " width="24 " height="24 " viewBox="0 0 24 24 " fill="none " stroke="#000000 " stroke-width="2 " stroke-linecap="round " stroke-linejoin="round "><polygon points="14 2 18 6 7 17 3 17 3 13
+                        14 2 "></polygon><line x1="3 " y1="22 " x2="21 " y2="22 "></line></svg> Редактировать
+                    </a>
                 </div>
             </div>
             {% endfor %}
