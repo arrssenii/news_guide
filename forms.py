@@ -23,3 +23,8 @@ class CreateForm(FlaskForm):  # форма создания новости
     intro = TextAreaField('Интро:', validators=[DataRequired()])
     text = TextAreaField('Текст новости:', validators=[DataRequired()])
     submit = SubmitField('Опубликовать')
+
+
+class SearchForm(FlaskForm):  # форма поиска новости
+    search = StringField('Найти новость по запросу:', validators=[DataRequired()])
+    submit = SubmitField('Найти')

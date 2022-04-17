@@ -1,12 +1,14 @@
+from email import message
+from traceback import format_exception_only
 from flask import Flask, request, abort, render_template, redirect, url_for
 from flask_login import LoginManager, login_user, login_required, logout_user, current_user
-import os
+import requests
 import base64
 from data.users import User
 from data.news import News
 from data import db_session
 from check_pass import password_check
-from forms import RegisterForm, LoginForm, CreateForm
+from forms import RegisterForm, LoginForm, CreateForm, SearchForm
 from work_with_api.news_api import news_api
 from work_with_api.currencies_api import currencies
 # настройки приложения
@@ -26,6 +28,42 @@ def index():
     news = db_sess.query(News)
     news = db_sess.query(News).filter(News.creator == current_user.username)
     return render_template("index.html", title='Главная', news=news[::-1], news_api=news_api, currencies=currencies)
+
+
+@app.route("/news_search", methods=['GET', 'POST'])
+@login_required
+def news_search():
+    db_sess = db_session.create_session()
+    news = db_sess.query(News)
+    news_search_api = []
+    form = SearchForm() 
+    if form.validate_on_submit():
+        if form.search.data:
+            request = f"https://newsapi.org/v2/everything?language=ru&q={form.search.data}&apiKey=499c7a59bd714f83abbee6644022628e"
+            try:
+                # Выполняем запрос.
+                response = requests.get(request)
+                if response:
+                    # Преобразуем ответ в json-объект
+                    json_response = response.json()
+                    responce = json_response['articles']
+                    for article in responce:
+                        source = (article['source']['name'])
+                        title = (article['title'])
+                        url = article['url']
+                        publishedAt = article['publishedAt']
+                        news_search_api.append({'source': source, 'title': title, 'url': url,
+                                        'publishedAt': publishedAt})
+                if not news_search_api:
+                    return render_template("news_search.html", title='Поиск новостей', news=news[::-1], form=form, message="Ничего не найдено!")
+                else:
+                    print("Ошибка выполнения запроса:")
+                    print(request)
+                    print("Http статус:", response.status_code, "(", response.reason, ")")
+            except Exception:
+                return render_template("news_search.html", title='Поиск новостей', news=news[::-1], form=form)
+    return render_template("news_search.html", title='Поиск новостей', news=news[::-1], form=form, news_search_api=news_search_api)
+
 
 
 @app.route("/news_to_me")
