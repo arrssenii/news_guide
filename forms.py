@@ -26,5 +26,5 @@ class CreateForm(FlaskForm):  # форма создания новости
 
 
 class SearchForm(FlaskForm):  # форма поиска новости
-    search = StringField('Найти новость по запросу:', validators=[DataRequired()])
+    search = StringField('Найти новости по запросу:', validators=[DataRequired()])
     submit = SubmitField('Найти')

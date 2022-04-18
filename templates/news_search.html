@@ -28,7 +28,7 @@
 {% block content %}
 <div class="col-md-9 ms-sm-auto col-lg-10 px-md-4 flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
     <form method="POST">
-        <h5>Поиск новости по ключевому слову</h5>
+        <h5>Поиск новостей</h5>
         {{ form.hidden_tag() }}
         <p>
             {{ form.search.label }}<br> {{ form.search(class="form-control") }}<br> {% for error in form.search.errors %}
