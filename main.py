@@ -180,11 +180,11 @@ def create_news():
 @app.route('/news/<int:id>')  # обработчик просомтра новости
 def news_detail(id):
     db_sess = db_session.create_session()  # подключение к БД
-    news = db_sess.query(News)  # импорт всех новостей
-    news_title = db_sess.query(News).filter(
-        News.id == id).first()  # достаём заглавие новости
+    all_news = db_sess.query(News)  # импорт всех новостей
+    new = db_sess.query(News).filter(  # достаём нужную новость
+        News.id == id).first()
     # импорт нужного шаблона с нужными данными
-    return render_template('news_detail.html', title=news_title.title, news=news[::-1], id=id)
+    return render_template('news_detail.html', title=new.title, news=all_news[::-1], new=new)
 
 
 @app.errorhandler(404)  # обработчик ошибок
