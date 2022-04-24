@@ -1,4 +1,5 @@
-{% extends "base.html" %} {% block content %}
+{% extends "base_1.html" %} 
+{% block content %}
 <div class="ones">
     <form class="forms" method="post">
         <h1 class="center">Авторизация</h1>
@@ -20,7 +21,7 @@
         <p class="center">{{ form.remember_me() }} {{ form.remember_me.label }}</p>
         <p class="center">{{ form.submit(type="submit", class="btn btn-primary") }}</p>
         <div class="center">{{ message }}</div>
-        <div class="center"><h6>Если у вас нет аккаунта, <a class="btn btn-success" href="/register">зарегистрируйтесь.</a></h6></div>
+        <div class="center ones"><h6>Если у вас нет аккаунта, <a class="btn btn-success" href="/register">зарегистрируйтесь.</a></h6></div>
     </form>
 </div>
 {% endblock %}

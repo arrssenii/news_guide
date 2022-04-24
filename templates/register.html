@@ -1,10 +1,11 @@
-{% extends "base.html" %} {% block content %}
+{% extends "base_1.html" %} {% block content %}
 <div class="ones">
 <form class="forms-reg" method="post">
         <h1 class="center">Регистрация</h1>
         {{ form.hidden_tag() }}
         <p>
-            {{ form.username.label }}<br> {{ form.username(class="form-control", type="username") }}<br> {% for error in form.username.errors %}
+            {{ form.username.label }}<br> {{ form.username(class="form-control", type="username") }}<br> 
+            {% for error in form.username.errors %}
             <p class="alert alert-danger" role="alert">
                 {{ error }}
             </p>
@@ -41,5 +42,5 @@
         <div class="center msg">{{ message }}</div>
         <p class="center">{{ form.submit(type="submit", class="btn btn-primary") }}</p>
 </form>
-</div>>
+</div>
 {% endblock %}
