@@ -19,6 +19,7 @@ app.config['SECRET_KEY'] = 'o_my_god__secret_key'
 login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = 'login'
+db_session.global_init("/home/KirillKa00/news_guide/db/database.db")  # инициализация БД
 
 
 @app.route("/")  # обработчик главной (домашней) страницы
@@ -252,7 +253,6 @@ def edit_news(id):
 
 
 def main():  # соновная функция приложения
-    db_session.global_init("db/database.db")  # инициализация БД
     app.run(debug=True)  # запуск приложения
 
 

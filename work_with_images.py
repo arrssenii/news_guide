@@ -9,7 +9,7 @@ def work_image():  # функция обработки изображений и
         image = base64.b64encode(bytestring).decode(
             'utf-8')  # преобразуем в удобный нам формат
     else:  # елси нет, достаём свою
-        with open('static/img/emptiness.jpg', 'rb') as file:
+        with open('/home/KirillKa00/news_guide/static/img/emptiness.jpg', 'rb') as file:
             bytestring = file.read()
             image = base64.b64encode(bytestring).decode('utf-8')
     return image  # возвращаем нужную нам картинку
