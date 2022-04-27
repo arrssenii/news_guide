@@ -1,5 +1,4 @@
 import requests
-
 request = "https://newsapi.org/v2/top-headlines?country=ru&apiKey=499c7a59bd714f83abbee6644022628e"  # собираем запрос
 response = requests.get(request)  # Выполняем запрос.
 news_api = []  # список для хранения будущих новостей

@@ -1,16 +1,17 @@
-from flask import Flask, request, abort, render_template, redirect, url_for
-from flask_login import LoginManager, login_user, login_required, logout_user, current_user
 import requests
-from work_with_images import work_image  # работа с изображениями
-from data.users import User  # модель пользователя
-from data.news import News  # модель новостей
-from data import db_session  # БД
+from flask import Flask, abort, redirect, render_template, url_for
+from flask_login import (LoginManager, current_user, login_required,
+                         login_user, logout_user)
 from check_pass import password_check  # функция проверки пароля
-from forms import RegisterForm, LoginForm, CreateForm, SearchForm  # формы
-# работа с новостями на главной странице
-from work_with_api.news_api import news_api
+from data import db_session  # БД
+from data.news import News  # модель новостей
+from data.users import User  # модель пользователя
+from forms import CreateForm, LoginForm, RegisterForm, SearchForm  # формы
 # работа с валютами на главной странице
 from work_with_api.currencies_api import currencies
+# работа с новостями на главной странице
+from work_with_api.news_api import news_api
+from work_with_images import work_image  # работа с изображениями
 # настройки приложения
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'o_my_god__secret_key'
@@ -28,7 +29,8 @@ def index():
     # импорт новостей, принадлежащих текущему пользователю
     news = db_sess.query(News).filter(News.creator == current_user.username)
     # возвращение нужного шаблона с данными
-    return render_template("index.html", title='Главная', news=news[::-1], news_api=news_api, currencies=currencies)
+    return render_template("index.html", title='Главная',
+                           news=news[::-1], news_api=news_api, currencies=currencies)
 
 
 # обработчик страницы поиска новостей
@@ -40,31 +42,38 @@ def news_search():
     news_search_api = []  # список для хранения найденных новостей
     form = SearchForm()  # форма для поиска
     if form.validate_on_submit():  # нажата ли кнопка "Найти"
-        # если форма непустая, составляем запрос с данными формы на русском языке и сортируем по популярности (https://newsapi.org/docs/endpoints/everything)
+        # если форма непустая, составляем запрос с данными формы на русском
+        # языке и сортируем по популярности (https://newsapi.org/docs/endpoints/everything)
         if form.search.data:
-            request = f"https://newsapi.org/v2/everything?language=ru&q={form.search.data}&sortBy=popularity&searchIn=title&apiKey=499c7a59bd714f83abbee6644022628e"
+            request = "https://newsapi.org/v2/everything?" + \
+                f"language=ru&q={form.search.data}" + \
+                "&sortBy=popularity&searchIn=title&apiKey=499c7a59bd714f83abbee6644022628e"
             response = requests.get(request)  # Выполняем запрос.
-            if response:  # проверка на пустоту
-                json_response = response.json()  # Преобразуем ответ в json-объект
-                responce = json_response['articles']  # достаём новости
-                for article in responce:  # перебираем их
+            json_response = response.json()  # Преобразуем ответ в json-объект
+            if json_response:  # проверка на пустоту
+                response = json_response['articles']  # достаём новости
+                for article in response:  # перебираем их
                     # и раскладываем "по полочкам"
                     source = (article['source']['name'])
                     title = (article['title'])
                     url = article['url']
                     publishedAt = article['publishedAt']
-                    news_search_api.append({'source': source, 'title': title, 'url': url,
-                                            'publishedAt': publishedAt})  # отправляем полученные данные в список
+                    news_search_api.append({
+                        'source': source, 'title': title, 'url': url,
+                        'publishedAt': publishedAt})  # отправляем полученные данные в список
                 if not news_search_api:  # проверка на пустоту
-                    return render_template("news_search.html", title='Поиск новостей', news=news[::-1], form=form, message="Ничего не найдено!")
+                    return render_template("news_search.html", title='Поиск новостей',
+                                           news=news[::-1], form=form, message="Ничего не найдено!")
             else:  # возвращаем ошибку, если что-то пошло не так
-                print("Ошибка выполнения запроса:")
+                print("Ошибка выполнения запроса: ничего не нашлось")
                 print(request)
                 print("Http статус:", response.status_code,
                       "(", response.reason, ")")
-                return render_template("news_search.html", title='Поиск новостей', news=news[::-1], form=form)
+                return render_template("news_search.html", title='Поиск новостей',
+                                       news=news[::-1], form=form)
     # возвращаем нужный шаблон с найденными новостями
-    return render_template("news_search.html", title='Поиск новостей', news=news[::-1], form=form, news_search_api=news_search_api)
+    return render_template("news_search.html", title='Поиск новостей',
+                           news=news[::-1], form=form, news_search_api=news_search_api)
 
 
 @app.route("/news_to_me")  # обработчик страницы с новостями пользователя
@@ -74,7 +83,8 @@ def news_to_me():
     news = db_sess.query(News).filter(
         News.creator == current_user.username)  # только новости пользователя
     # возврат нужного шаблона с новостями
-    return render_template("news_to_me.html", title='Ваши новости', news=news[::-1])
+    return render_template("news_to_me.html",
+                           title='Ваши новости', news=news[::-1])
 
 
 # обработчик страницы с новостями других пользователей
@@ -84,7 +94,8 @@ def news_of_all():
     db_sess = db_session.create_session()  # подключение к БД
     news = db_sess.query(News)  # импорт всех новостей
     # возврат нужного шаблона с новостями
-    return render_template("news_of_all.html", title='Другие новости', news=news[::-1])
+    return render_template("news_of_all.html",
+                           title='Другие новости', news=news[::-1])
 
 
 # обработка регистрации пользователя
@@ -95,10 +106,10 @@ def register():
         check_password = password_check(
             form.hashed_password.data)  # проверка пароля
         if True in check_password.values():
-            for k, v in check_password.items():
-                if str(v) == 'True':  # вывод конкретной "неправильности" пароля
+            for key, value in check_password.items():
+                if value is True:  # вывод конкретной "неправильности" пароля
                     return render_template('register.html', title='Регистрация',
-                                           form=form, message=k)
+                                           form=form, message=key)
         if form.hashed_password.data != form.password_again.data:  # проверка сходства паролей
             return render_template('register.html', title='Регистрация',
                                    form=form,
@@ -174,7 +185,8 @@ def create_news():
         # переброс пользователя на страницу со своими новстями
         return redirect('/news_to_me')
     # импорт нужного шаблона с нужными данными
-    return render_template('create_news.html', title='Создание новости', form=form, news=news[::-1])
+    return render_template('create_news.html',
+                           title='Создание новости', form=form, news=news[::-1])
 
 
 @app.route('/news/<int:id>')  # обработчик просомтра новости
@@ -184,7 +196,8 @@ def news_detail(id):
     new = db_sess.query(News).filter(  # достаём нужную новость
         News.id == id).first()
     # импорт нужного шаблона с нужными данными
-    return render_template('news_detail.html', title=new.title, news=all_news[::-1], new=new)
+    return render_template('news_detail.html', title=new.title,
+                           news=all_news[::-1], new=new)
 
 
 @app.errorhandler(404)  # обработчик ошибок
@@ -232,10 +245,10 @@ def edit_news(id):
             return redirect('/news_to_me')
         else:
             abort(404)  # если что-то пошло не так, выдаём ошибку
-    db_sess = db_session.create_session()  # подключение к БД
     news = db_sess.query(News)  # импорт всех новстей
     # импорт нужного шаблона с нужными данными
-    return render_template('create_news.html', title='Редактирование Новости', form=form, news=news[::-1])
+    return render_template('create_news.html',
+                           title='Редактирование Новости', form=form, news=news[::-1])
 
 
 def main():  # соновная функция приложения

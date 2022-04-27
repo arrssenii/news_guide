@@ -1,6 +1,4 @@
 import requests
- 
- 
 response = requests.get("https://www.cbr-xml-daily.ru/daily_json.js")
 currencies = []
 if response.status_code == 200:
@@ -12,4 +10,5 @@ if response.status_code == 200:
         Name = values['Name']
         Previous = values['Previous']
         Value = values['Value']
-        currencies.append({'Name': Name, 'Previous': Previous, 'CharCode': CharCode, 'Value': Value})
+        currencies.append({'Name': Name, 'Previous': Previous,
+                           'CharCode': CharCode, 'Value': Value})
