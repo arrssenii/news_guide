@@ -1,8 +1,9 @@
 ## News Guide
 ____ 
 - http://kirillka00.pythonanywhere.com/ - сайт проекта (сделал Кирилл Кобзев)
+- https://github.com/arrssenii/news_guide/tree/test - деплой сайта производится с этой ветки репозитория
 - https://t.me/NewsGuideBot - бот проекта (сделал Арсений Семенихин)
-- https://github.com/arrssenii/NewsGuideBot - репозиторий с ботом
+- https://github.com/arrssenii/NewsGuideBot/tree/main - репозиторий с ботом
 - https://github.com/arrssenii/news_guide/wiki/Protection - пояснительная записка и презентация 
 ____ 
 ### Описание проекта
