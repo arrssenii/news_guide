@@ -1,5 +1,5 @@
 import requests
-from flask import Flask, abort, redirect, render_template, url_for
+from flask import Flask, abort, redirect, render_template, url_for, request
 from flask_login import (LoginManager, current_user, login_required,
                          login_user, logout_user)
 from check_pass import password_check  # функция проверки пароля
@@ -12,6 +12,7 @@ from work_with_api.currencies_api import currencies
 # работа с новостями на главной странице
 from work_with_api.news_api import news_api
 from work_with_images import work_image  # работа с изображениями
+import markdown  # для форматирования новостей
 # настройки приложения
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'o_my_god__secret_key'
@@ -177,7 +178,7 @@ def create_news():
             creator=current_user.username,
             title=form.title.data,
             intro=form.intro.data,
-            text=form.text.data,
+            text=markdown.markdown(form.text.data),
             image=image,
         )  # добавление пользователя в базу
         db_sess.add(news)
@@ -229,6 +230,17 @@ def news_delete(id):
 def edit_news(id):
     form = CreateForm()  # импорт нужной формы
     db_sess = db_session.create_session()  # подключение к БД
+    if request.method == "GET":  # заполняем формы для удобства 
+        news = db_sess.query(News).filter(News.id == id,
+                                          News.creator == current_user.username
+                                          ).first()
+        if news:  # закидываем всё по полям
+            current_user.username = news.creator
+            form.title.data = news.title
+            form.intro.data = news.intro
+            form.text.data = news.text
+        else:
+            abort(404)
     if form.validate_on_submit():
         news = db_sess.query(News).filter(News.id == id,  # достаём нужную новость
                                           News.creator == current_user.username
