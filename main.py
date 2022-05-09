@@ -251,7 +251,7 @@ def edit_news(id):
             news.creator = current_user.username
             news.title = form.title.data
             news.intro = form.intro.data
-            news.text = form.text.data
+            news.text = markdown.markdown(form.text.data)
             news.image = image
             db_sess.commit()  # закрепляем отредактированную новость в БД
             # переадресация на страницу с личными новостями пользователя
