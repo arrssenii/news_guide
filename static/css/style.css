@@ -57,6 +57,9 @@ a:hover {
     .navbar-brand {
         margin-left: 32%;
     }
+    .card {
+        margin: auto;
+    }
 }
 
 .nav-link {

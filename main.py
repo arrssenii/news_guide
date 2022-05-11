@@ -173,6 +173,10 @@ def create_news():
     news = db_sess.query(News)  # импорт всех новостей
     form = CreateForm()  # импорт нужной формы
     if form.validate_on_submit():
+        if db_sess.query(News).filter(News.title == form.title.data).first():
+            return render_template('create_news.html', title='Создание новости',
+                                   form=form,
+                                   message="Такая новость уже есть!")
         image = work_image()
         news = News(  # добавление новости в БД
             creator=current_user.username,
