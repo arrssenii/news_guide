@@ -6,8 +6,8 @@ if response:
     json_response = response.json()  # Преобразуем ответ в json-объект
     responce = json_response['articles']  # достаём новости
     for article in responce:  # пробегаемся по ним, собирая всё "по полочкам"
-        source = (article['source']['name'])
-        title = (article['title'])
+        source = article['source']['name']
+        title = article['title']
         url = article['url']
         publishedAt = article['publishedAt']
         news_api.append({'source': source, 'title': title, 'url': url,

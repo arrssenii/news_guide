@@ -13,6 +13,7 @@ from work_with_api.currencies_api import currencies
 from work_with_api.news_api import news_api
 from work_with_images import work_image  # работа с изображениями
 import markdown  # для форматирования новостей
+from markdownify import markdownify
 # настройки приложения
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'o_my_god__secret_key'
@@ -24,14 +25,17 @@ login_manager.login_view = 'login'
 
 @app.route("/")  # обработчик главной (домашней) страницы
 @app.route("/home")
-@login_required
 def index():
     db_sess = db_session.create_session()  # подключение к БД
     # импорт новостей, принадлежащих текущему пользователю
-    news = db_sess.query(News).filter(News.creator == current_user.username)
-    # возвращение нужного шаблона с данными
-    return render_template("index.html", title='Главная',
-                           news=news[::-1], news_api=news_api, currencies=currencies)
+    if current_user.is_authenticated:
+        news = db_sess.query(News).filter(
+            News.creator == current_user.username)
+        return render_template("index.html", title='Главная',
+                               news=news[::-1], news_api=news_api, currencies=currencies)
+    else:
+        return render_template("index.html", title='Главная',
+                               news_api=news_api, currencies=currencies)
 
 
 # обработчик страницы поиска новостей
@@ -90,7 +94,6 @@ def news_to_me():
 
 # обработчик страницы с новостями других пользователей
 @app.route("/news_of_all")
-@login_required
 def news_of_all():
     db_sess = db_session.create_session()  # подключение к БД
     news = db_sess.query(News)  # импорт всех новостей
@@ -200,9 +203,12 @@ def news_detail(id):
     all_news = db_sess.query(News)  # импорт всех новостей
     new = db_sess.query(News).filter(  # достаём нужную новость
         News.id == id).first()
-    # импорт нужного шаблона с нужными данными
-    return render_template('news_detail.html', title=new.title,
-                           news=all_news[::-1], new=new)
+    if new:
+        # импорт нужного шаблона с нужными данными
+        return render_template('news_detail.html', title=new.title,
+                               news=all_news[::-1], new=new)
+    else:
+        abort(404)
 
 
 @app.errorhandler(404)  # обработчик ошибок
@@ -234,7 +240,7 @@ def news_delete(id):
 def edit_news(id):
     form = CreateForm()  # импорт нужной формы
     db_sess = db_session.create_session()  # подключение к БД
-    if request.method == "GET":  # заполняем формы для удобства 
+    if request.method == "GET":  # заполняем формы для удобства
         news = db_sess.query(News).filter(News.id == id,
                                           News.creator == current_user.username
                                           ).first()
@@ -242,7 +248,7 @@ def edit_news(id):
             current_user.username = news.creator
             form.title.data = news.title
             form.intro.data = news.intro
-            form.text.data = news.text
+            form.text.data = markdownify(news.text)
         else:
             abort(404)
     if form.validate_on_submit():

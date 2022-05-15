@@ -29,8 +29,13 @@
                     </svg> Телеграм-бот</a>
                 </li>
                 <li style="color: aliceblue;">{{current_user.username}}</li>
-                <li><a class="btn btn-dark" href="/register">Новая регистрация</a></li>
-                <li><a class="btn btn-dark" href="/logout">Выход</a></li>
+                {% if current_user.is_authenticated %}
+                    <li><a class="btn btn-dark" href="/register">Новая регистрация</a></li>
+                    <li><a class="btn btn-dark" href="/logout">Выйти</a></li>
+                {% else %}
+                    <li><a class="btn btn-dark" href="/register">Зарегистрироваться</a></li>
+                    <li><a class="btn btn-dark" href="/login">Войти</a></li>
+                {% endif %}
             </ul>
         </div>
     </header>
