@@ -41,7 +41,6 @@ def index():
 
 # обработчик страницы поиска новостей
 @app.route("/news_search", methods=['GET', 'POST'])
-@login_required
 def news_search():
     db_sess = db_session.create_session()  # подключение к БД
     news = db_sess.query(News)  # импорт всех новостей
@@ -154,7 +153,7 @@ def login():
         # проверки для доступа к приложению
         if user and user.check_password(form.password.data):
             login_user(user, remember=form.remember_me.data)
-            return redirect("/")
+            return redirect("/news_to_me")
         return render_template('login.html',
                                message="Неправильная почта или пароль",
                                form=form)
