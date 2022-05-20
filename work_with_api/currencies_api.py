@@ -10,5 +10,9 @@ if response.status_code == 200:
         Name = values['Name']
         Previous = values['Previous']
         Value = values['Value']
-        currencies.append({'Name': Name, 'Previous': Previous,
-                           'CharCode': CharCode, 'Value': Value})
+        if Value > Previous:
+            currencies.append({'Name': Name, 'Previous': Previous,
+                            'CharCode': CharCode, 'Value': f'{Value} ▲'})
+        else:
+            currencies.append({'Name': Name, 'Previous': Previous,
+                            'CharCode': CharCode, 'Value': f'{Value} ▼'})
