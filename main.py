@@ -12,7 +12,8 @@ from work_with_api.currencies_api import currencies
 # работа с новостями на главной странице
 from work_with_api.news_api import news_api
 from work_with_images import work_image  # работа с изображениями
-import markdown  # для форматирования новостей
+import markdown  # для форматирования новостейmarkdown
+# расшифровка markdown форматированных новостей
 from markdownify import markdownify
 # настройки приложения
 app = Flask(__name__)
@@ -263,7 +264,7 @@ def edit_news(id):
             news.image = image
             db_sess.commit()  # закрепляем отредактированную новость в БД
             # переадресация на страницу с личными новостями пользователя
-            return redirect('/news_to_me')
+            return redirect(f'/news/{news.id}')
         else:
             abort(404)  # если что-то пошло не так, выдаём ошибку
     news = db_sess.query(News)  # импорт всех новстей
