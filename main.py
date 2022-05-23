@@ -13,8 +13,6 @@ from work_with_api.currencies_api import currencies
 from work_with_api.news_api import news_api
 from work_with_images import work_image  # работа с изображениями
 import markdown  # для форматирования новостейmarkdown
-# расшифровка markdown форматированных новостей
-from markdownify import markdownify
 # настройки приложения
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'o_my_god__secret_key'
@@ -248,7 +246,7 @@ def edit_news(id):
             current_user.username = news.creator
             form.title.data = news.title
             form.intro.data = news.intro
-            form.text.data = markdownify(news.text)
+            form.text.data = news.text
         else:
             abort(404)
     if form.validate_on_submit():
