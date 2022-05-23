@@ -60,8 +60,8 @@
             </div>
         </div>
         <p>
-            {{ form.text.label }}<br> {{ form.text(class="form-control") }}<br> {% for error in form.text.errors %}
-            <p class="alert alert-danger" role="alert">
+            {{ form.text.label }}<br> {{ form.text(class="form-control w-100") }}<br> {% for error in form.text.errors %}
+            <p class="alert alert-danger"role="alert">
                 {{ error }}
             </p>
             {% endfor %}
