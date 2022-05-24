@@ -22,11 +22,15 @@
 {% endblock %} {% block content %}
 <div class="col-md-9 ms-sm-auto col-lg-10 px-md-4 flex-wrap flex-md-nowrap align-news-center pt-3 pb-2 mb-3 border-bottom">
     <div class="text-box">
-        <h3>
-            {{ new.title }}
-        </h3>
+        <div style="display: flex; flex-direction: row;">
+            <h3>
+                {{ new.title }}
+            </h3>
+            <div style="padding-left: 10px;" class="ya-share2" data-curtain data-shape="round" data-limit="0" data-more-button-type="short" data-direction="top" data-services="vkontakte,telegram,twitter,evernote,linkedin,lj,reddit"></div>
+        </div>   
         <div class="blog-detail">
-            Опубликовано <span>{{new.create_date.strftime("%Y-%m-%d | %H:%M") }}</span>
+            <div>Опубликовано <span>{{new.create_date.strftime("%Y-%m-%d | %H:%M") }}</span></div>
+            <script src="https://yastatic.net/share2/share.js"></script>
         </div>
         <div class="blog-image">
             <img src="data:image/png;base64,{{new.image}}" width="280" , height="200">
