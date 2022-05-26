@@ -1,0 +1,30 @@
+{% extends "base_2.html" %}
+{% set active_page = "tech_news" %}
+{% block content %}
+<main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+    <div class="chartjs-size-monitor">
+        <div class="chartjs-size-monitor-expand">
+            <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                <h1 class="h2">Технологические новости</h1>
+            </div>
+            <h4 class="my-4 w-100 chartjs-render-monitor" id="myChart" width="1012" height="427" style="display: block; width: 810px;">Популярные новости про технологии и IT</h4>
+            <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+            {% for new in news_api_tech %}
+                <div class="col">
+                    <div class="card shadow-sm">
+                        <div class="card-body">
+                            <h6 class="card-text">{{ new['title'] }}</h6>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div class="btn-group">
+                                    <a class="btn btn-secondary" target="_blank" href="{{ new['url'] }}" style="padding: 8px 30px; margin-top: 10px;">Читать</a>
+                                </div>
+                                <small class="text-muted" style="padding-right: 10px;"></small>{{ new['publishedAt'] }}</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+</main>
+
+{% endblock %}

@@ -10,7 +10,7 @@ from forms import CreateForm, LoginForm, RegisterForm, SearchForm  # формы
 # работа с валютами на главной странице
 from work_with_api.currencies_api import currencies
 # работа с новостями на главной странице
-from work_with_api.news_api import news_api
+from work_with_api.news_api import news_api, news_api_tech
 from work_with_images import work_image  # работа с изображениями
 import markdown  # для форматирования новостейmarkdown
 # настройки приложения
@@ -270,6 +270,20 @@ def edit_news(id):
     # импорт нужного шаблона с нужными данными
     return render_template('create_news.html',
                            title='Редактирование Новости', form=form, news=news[::-1])
+                               
+
+@app.route("/tech_news")  # обработчик новостей про технологии
+def tech_news():
+    db_sess = db_session.create_session()  # подключение к БД
+    # импорт новостей, принадлежащих текущему пользователю
+    if current_user.is_authenticated:
+        news = db_sess.query(News).filter(
+            News.creator == current_user.username)
+        return render_template("tech_news.html", title='Новости о технологиях',
+                               news=news[::-1], news_api_tech=news_api_tech)
+    else:
+        return render_template("tech_news.html", title='Новости о технологиях',
+                               news_api_tech=news_api_tech)
 
 
 def main():  # соновная функция приложения

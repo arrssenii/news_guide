@@ -1,32 +1,13 @@
-{% extends "base_2.html" %} {% block menu %}
-<li class="nav-new">
-    <a class="nav-link" aria-current="page" href="/home">
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-home" aria-hidden="true"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>        Главная
-    </a>
-</li>
-<li class="nav-new">
-    <a class="nav-link" href="/news_search">
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>        Поиск новостей
-    </a>
-</li>
-<li class="nav-new">
-    <a class="nav-link" href="/news_of_all">
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>        Другие новсоти
-    </a>
-</li>
-<li class="nav-new">
-    <a class="nav-link" href="/news_to_me">
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file" aria-hidden="true"><path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"></path><polyline points="13 2 13 9 20 9"></polyline></svg>        Ваши новости
-    </a>
-</li>
-{% endblock %} {% block content %}
+{% extends "base_2.html" %} 
+{% set active_page = "news_detail" %}
+{% block content %}
 <div class="col-md-9 ms-sm-auto col-lg-10 px-md-4 flex-wrap flex-md-nowrap align-news-center pt-3 pb-2 mb-3 border-bottom">
     <div class="text-box">
         <div style="display: flex; flex-direction: row;">
             <h3>
                 {{ new.title }}
             </h3>
-            <div style="padding-left: 10px;" class="ya-share2" data-curtain data-shape="round" data-limit="0" data-more-button-type="short" data-direction="top" data-services="vkontakte,telegram,twitter,evernote,linkedin,lj,reddit"></div>
+            <div style="padding-left: 10px;" class="ya-share2" data-curtain data-shape="round" data-limit="0" data-more-button-type="short" data-direction="right" data-services="vkontakte,telegram,twitter,evernote,linkedin,lj,reddit"></div>
         </div>   
         <div class="blog-detail">
             <div>Опубликовано <span>{{new.create_date.strftime("%Y-%m-%d | %H:%M") }}</span></div>
