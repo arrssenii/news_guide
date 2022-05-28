@@ -13,6 +13,7 @@ from work_with_api.currencies_api import currencies
 from work_with_api.news_api import news_api, news_api_tech
 from work_with_images import work_image  # работа с изображениями
 import markdown  # для форматирования новостейmarkdown
+import os
 # настройки приложения
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'o_my_god__secret_key'
@@ -287,7 +288,8 @@ def tech_news():
 
 def main():  # соновная функция приложения
     db_session.global_init("db/database.db")  # инициализация БД
-    app.run(host='0.0.0.0', debug=True)  # запуск приложения
+    port = int(os.environ.get("PORT", 5000))
+    app.run(host='0.0.0.0', port=port)
 
 
 if __name__ == '__main__':  # старт
