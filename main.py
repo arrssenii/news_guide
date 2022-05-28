@@ -287,7 +287,7 @@ def tech_news():
 
 def main():  # соновная функция приложения
     db_session.global_init("db/database.db")  # инициализация БД
-    app.run(debug=True)  # запуск приложения
+    app.run(host='0.0.0.0', debug=True)  # запуск приложения
 
 
 if __name__ == '__main__':  # старт
