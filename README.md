@@ -1,6 +1,6 @@
 ## News Guide
 ____ 
-- [сайт проекта](https://ng.kirka.me/) (сделал Кирилл Кобзев)
+- [сайт проекта](https://kirillka00.pythonanywhere.com/) (сделал Кирилл Кобзев)
 - [бот проекта](https://t.me/NewsGuideBot) (сделал Арсений Семенихин)
 - [репозиторий с ботом](https://github.com/arrssenii/NewsGuideBot/tree/main)
 - [пояснительная записка и презентация ](https://github.com/arrssenii/news_guide/wiki/Protection)
